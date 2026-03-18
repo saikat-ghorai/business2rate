@@ -39,8 +39,15 @@ class Business
         ];
     }
 
-    public function getDetails($businessId)
+    public function getDetails($businessId = null)
     {
+        if ($businessId == null) {
+            return [
+                "status" => 'error',
+                "errors" => 'Please provide id',
+                "dataId" => ''
+            ];
+        }
         $statement = $this->pdo->prepare("SELECT * FROM businesses WHERE id = :businessId AND status = '1'");
 
         $statement->bindValue(':businessId', $businessId, PDO::PARAM_STR);
@@ -65,7 +72,7 @@ class Business
         }
         $id = generateId();
 
-        $checkStatement = $this->pdo->prepare("SELECT id FROM ratings WHERE email = ? OR phone = ? LIMIT 1");
+        $checkStatement = $this->pdo->prepare("SELECT id FROM businesses WHERE (email = ? OR phone = ?) AND status = '1' LIMIT 1");
         $checkStatement->execute([
             $data['phone'],
             $data['email']
@@ -109,7 +116,7 @@ class Business
 
     public function update($id = null, $data = array())
     {
-        if ($id = null || !isset($data['name']) || !isset($data['address']) || !isset($data['phone']) || !isset($data['email'])) {
+        if ($id == null || !isset($data['name']) || !isset($data['address']) || !isset($data['phone']) || !isset($data['email'])) {
             return [
                 "status" => 'error',
                 "errors" => 'Please provide valid inputs',

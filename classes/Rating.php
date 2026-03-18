@@ -19,7 +19,7 @@ class Rating
                 "dataId" => ''
             ];
         }
-        $checkStatement = $this->pdo->prepare("SELECT id FROM ratings WHERE business_id = ? AND (email = ? OR phone = ?) LIMIT 1");
+        $checkStatement = $this->pdo->prepare("SELECT id FROM ratings WHERE business_id = ? AND (email = ? OR phone = ?) AND status = '1' LIMIT 1");
 
         $checkStatement->execute([
             $data['business_id'],
