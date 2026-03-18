@@ -1,0 +1,8 @@
+RewriteEngine On
+RewriteBase /business2rate/
+
+RewriteRule ^api/([a-zA-Z]+)/([a-zA-Z]+)$ api/index.php?type=$1&action=$2 [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^([^\.]+)$ $1.php [L]
